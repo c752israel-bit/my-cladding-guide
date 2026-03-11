@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מדריך אדריכלי: חיפוי קיר</title>
+    <title>מדריך אדריכלי: חיפוי קיר-רצפה</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -12,37 +12,114 @@
     <link rel="icon" sizes="192x192" href="https://cdn-icons-png.flaticon.com/512/1048/1048953.png">
 
     <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --bg: #f4f7f6;
+        }
         body {
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             line-height: 1.6;
             color: #333;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f4f7f6;
+            background-color: var(--bg);
+        }
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--primary);
+            color: white;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         .card {
             background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
         }
-        h1 { color: #2c3e50; text-align: center; }
-        .step { border-right: 4px solid #3498db; padding-right: 15px; margin: 20px 0; }
+        h2 { color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #fff;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: right;
+        }
+        th { background-color: var(--accent); color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .highlight {
+            background: #e1f5fe;
+            padding: 15px;
+            border-right: 5px solid var(--accent);
+            border-radius: 5px;
+            margin: 15px 0;
+        }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>מדריך מקצועי: חיפוי קיר</h1>
-        <div class="step">
-            <h3>שלב 1: הכנת התשתית</h3>
-            <p>וודא שהקיר ישר ונקי מאבק לפני תחילת העבודה.</p>
-        </div>
-        <div class="step">
-            <h3>שלב 2: מריחת דבק</h3>
-            <p>יש להשתמש בדבק גמיש המתאים לסוג החיפוי שנבחר.</p>
-        </div>
+
+<header>
+    <h1>מדריך אדריכלי: מפגש קיר-רצפה</h1>
+    <p>דגשים טכניים לביצוע חיפויים וריצוף</p>
+</header>
+
+<div class="card">
+    <h2>סדר פעולות מומלץ</h2>
+    <p>כדי להבטיח איטום מושלם ומראה אסתטי, יש לעבוד לפי הסדר הבא:</p>
+    <div class="highlight">
+        <strong>1. ריצוף:</strong> ביצוע הריצוף עד למרחק של כ-1 ס"מ מהקיר.<br>
+        <strong>2. איטום:</strong> יישום מסטיק איטום בחיבור בין הרצפה לקיר.<br>
+        <strong>3. חיפוי:</strong> התקנת אריחי הקיר מעל הריצוף (כיסוי המרווח).
     </div>
+</div>
+
+<div class="card">
+    <h2>טבלת חומרים וכלים</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>חומר/כלי</th>
+                <th>תפקיד</th>
+                <th>דגש לביצוע</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>דבק גמיש (C2TE-S1)</td>
+                <td>הדבקת אריחים</td>
+                <td>מריחה בשכבה כפולה</td>
+            </tr>
+            <tr>
+                <td>ספייסרים</td>
+                <td>שמירה על פוגות</td>
+                <td>מינימום 3 מ"מ בחוץ</td>
+            </tr>
+            <tr>
+                <td>סיליקון / מסטיק</td>
+                <td>איטום פינות</td>
+                <td>עמיד ב-UV ובעובש</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="card">
+    <h2>דגשי בטיחות ודיוק</h2>
+    <ul>
+        <li>וודא שהתשתית נקייה מאבק ושומנים לפני ההדבקה.</li>
+        <li>יש לבצע בדיקת "מכה" על האריחים לוודא שאין חללים ריקים (סאונד חלול).</li>
+        <li>במפגש קיר-רצפה בחדרים רטובים, חובה להקפיד על רולקה תקנית.</li>
+    </ul>
+</div>
+
 </body>
 </html>
