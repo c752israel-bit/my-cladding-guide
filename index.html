@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מדריך אדריכלי: שילוב חיפוי פולימרי ופנלים</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts for Hebrew -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Heebo', sans-serif;
+        }
+        
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f5f5f4; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d6d3d1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a29e; 
+        }
+
+        /* Chart Container Mandatory Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        /* Diagram Animation Utilities */
+        .diagram-element {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-stone-50 text-stone-800 antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Chosen Palette: Warm Stones with Teal Accents (bg-stone-50, text-stone-800, brand-teal-600) -->
+    <!-- Application Structure Plan: The SPA is structured to directly answer the user's dilemma regarding baseboards and wall cladding. It starts with an executive summary and professional terminology clarification. The core is an interactive 'Visualizer' that uses HTML/CSS to simulate the requested "pictures" (cross-sections) of the 3 architectural options, allowing dynamic comparison. A Chart.js radar chart objectively compares the options on parameters like durability and aesthetics. Finally, an interactive "Decision Tool" helps the user choose the right option based on their specific material thicknesses. This structure moves from understanding the concepts -> visualizing the options -> evaluating them -> actionable personal recommendation. -->
+    <!-- Visualization & Content Choices: 
+         1. Cross-section Diagrams: Goal: Show architectural details ("pictures") without SVG. Method: Absolute positioned HTML/Tailwind divs with CSS transitions. Justification: Meets the 'NO SVG' strict constraint while providing highly descriptive visual answers to the user's spatial question.
+         2. Radar Chart: Goal: Compare the 3 options on multiple metrics. Method: Chart.js (Radar). Justification: Allows quick visual assessment of trade-offs (e.g., Option 1 is pretty but vulnerable to water, Option 2 is balanced).
+         3. Interactive Calculator: Goal: Provide concrete advice. Method: Vanilla JS form evaluating material thicknesses. Justification: Transforms static advice into a personalized architectural solution based on the most critical variable (thickness). 
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        
+        <!-- Header Section -->
+        <header class="mb-12 text-center">
+            <div class="inline-flex items-center justify-center p-3 bg-brand-100 rounded-full mb-4 text-brand-600">
+                <span class="text-3xl">🏗️</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-stone-900 mb-4 tracking-tight">המדריך המקצועי למפגש קיר-רצפה</h1>
+            <p class="text-lg text-stone-600 max-w-2xl mx-auto">
+                הזמנת חיפוי קיר פולימרי ואתה מתלבט מה עושים עם הפנלים של הריצוף? האם לשים פנל מתחת לחיפוי, או להוריד את החיפוי עד הרצפה? המערכת הזו תעשה לך סדר, תסביר את המונחים המקצועיים, ותציג את הפתרונות.
+            </p>
+        </header>
+
+        <!-- Terminology Section -->
+        <section class="bg-white rounded-2xl shadow-sm border border-stone-200 p-6 md:p-8 mb-12">
+            <h2 class="text-2xl font-bold text-stone-900 mb-6 flex items-center gap-2">
+                <span class="text-brand-500">📚</span> מונחים מקצועיים שחשוב להכיר
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="p-4 bg-stone-50 rounded-xl border border-stone-100">
+                    <h3 class="font-bold text-brand-800 mb-2">חיפוי פולימרי</h3>
+                    <p class="text-sm text-stone-600">לוחות קשיחים המיוצרים מחומרים פלסטיים (לרוב פוליאוריטן או פוליסטירן). עמידים למים יחסית לעץ, אך רגישים יותר למכות ישירות מאשר קרמיקה.</p>
+                </div>
+                <div class="p-4 bg-stone-50 rounded-xl border border-stone-100">
+                    <h3 class="font-bold text-brand-800 mb-2">פנל רצפה</h3>
+                    <p class="text-sm text-stone-600">הפס התחתון (לרוב כ-10 ס"מ) שמטרתו להגן על תחתית הקיר ממי שטיפה ("ספונג'ה"), מכות ממטאטא ומגב, וכן להסתיר את תפרי הריצוף.</p>
+                </div>
+                <div class="p-4 bg-stone-50 rounded-xl border border-stone-100">
+                    <h3 class="font-bold text-brand-800 mb-2">מדרגה / הפרשי עוביי</h3>
+                    <p class="text-sm text-stone-600">המושג הקריטי ביותר בתכנון. כאשר החיפוי עבה יותר מהפנל (או להפך), נוצרת בנקודת החיבור "מדרגה" שיכולה לפגוע באסתטיקה ולאסוף אבק.</p>
+                </div>
+                <div class="p-4 bg-stone-50 rounded-xl border border-stone-100">
+                    <h3 class="font-bold text-brand-800 mb-2">ניתוק (מרווח)</h3>
+                    <p class="text-sm text-stone-600">השארת מרווח קטן (2-3 מ"מ) בין החיפוי לרצפה. נועד למנוע מגע ישיר עם מים עומדים ולאפשר התפשטות תרמית של החומר.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Visualizer Section -->
+        <section class="mb-12">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-stone-900 mb-2">המחשה חזותית: 3 האפשרויות להתקנה</h2>
+                <p class="text-stone-600">לחץ על האפשרויות השונות כדי לראות "תמונת חתך צד" של הקיר והרצפה, ולקרוא את היתרונות והחסרונות של כל שיטה.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Controls and Text (Left/Top) -->
+                <div class="lg:col-span-5 flex flex-col gap-4">
+                    <div class="flex flex-col gap-2">
+                        <button onclick="updateVisualizer('opt1')" id="btn-opt1" class="text-right px-5 py-4 rounded-xl border-2 border-transparent bg-white shadow-sm hover:border-brand-300 transition-all focus:outline-none">
+                            <div class="font-bold text-lg text-stone-800">אופציה 1: חיפוי עד הרצפה</div>
+                            <div class="text-sm text-stone-500">ללא פנל באזור המחופה</div>
+                        </button>
+                        <button onclick="updateVisualizer('opt2')" id="btn-opt2" class="text-right px-5 py-4 rounded-xl border-2 border-brand-500 bg-brand-50 shadow-sm transition-all focus:outline-none relative overflow-hidden">
+                            <div class="absolute top-0 right-0 bg-brand-500 text-white text-[10px] px-2 py-1 rounded-bl-lg font-bold">המומלץ ביותר</div>
+                            <div class="font-bold text-lg text-brand-900">אופציה 2: פנל היקפי והחיפוי מעליו</div>
+                            <div class="text-sm text-brand-700">הפנל משמש כ"בסיס" לחיפוי</div>
+                        </button>
+                        <button onclick="updateVisualizer('opt3')" id="btn-opt3" class="text-right px-5 py-4 rounded-xl border-2 border-transparent bg-white shadow-sm hover:border-brand-300 transition-all focus:outline-none">
+                            <div class="font-bold text-lg text-stone-800">אופציה 3: התקנה על-גבי החיפוי</div>
+                            <div class="text-sm text-stone-500">הדבקת הפנל מחוץ לחיפוי</div>
+                        </button>
+                    </div>
+
+                    <!-- Dynamic Details Panel -->
+                    <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm mt-2 flex-grow">
+                        <h3 id="detail-title" class="text-xl font-bold text-stone-900 mb-3 border-b pb-2">אופציה 2: חיפוי מעל פנל היקפי</h3>
+                        
+                        <div class="mb-4">
+                            <h4 class="font-bold text-stone-700 mb-1 text-sm uppercase tracking-wider">איך זה עובד?</h4>
+                            <p id="detail-desc" class="text-stone-600">מתקינים את הפנל של ה-10 ס"מ בכל רחבי החדר (גם בקירות החלקים וגם במחופים). לאחר מכן, מתקינים את חיפוי הקיר כך שהוא "יושב" על השפה העליונה של הפנל.</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-bold text-emerald-700 mb-2 flex items-center gap-1"><span class="text-lg">✓</span> יתרונות</h4>
+                                <ul id="detail-pros" class="text-sm text-stone-600 space-y-1 list-disc list-inside">
+                                    <li>הגנה מושלמת ממים (ספונג'ה).</li>
+                                    <li>הגנה ממכות של מגב/מטאטא.</li>
+                                    <li>קו פנל אחיד בכל רחבי החדר.</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-rose-700 mb-2 flex items-center gap-1"><span class="text-lg">✗</span> חסרונות</h4>
+                                <ul id="detail-cons" class="text-sm text-stone-600 space-y-1 list-disc list-inside">
+                                    <li>חובה שהפנל יהיה עבה יותר מהחיפוי! אם החיפוי עבה יותר, הוא יבלוט החוצה בצורה לא יפה.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Architectural Drawing Simulator (Right) -->
+                <div class="lg:col-span-7 bg-white rounded-2xl border border-stone-200 shadow-sm p-6 flex flex-col items-center justify-center relative overflow-hidden min-h-[400px]">
+                    <div class="absolute top-4 right-4 text-xs font-bold text-stone-400 uppercase tracking-widest">חתך צד אדריכלי</div>
+                    
+                    <!-- The Canvas Area for the CSS Diagram -->
+                    <div class="relative w-full max-w-sm h-72 bg-[#fafaf9] border-2 border-dashed border-stone-200 rounded-lg overflow-hidden flex items-end justify-center">
+                        
+                        <!-- Base Wall (Always static) -->
+                        <div class="absolute right-12 top-0 h-full w-24 bg-stone-300 border-l border-stone-400 flex items-center justify-center">
+                            <span class="text-stone-500 font-bold opacity-50 -rotate-90 whitespace-nowrap">קיר בטון/בלוקים</span>
+                        </div>
+                        
+                        <!-- Floor (Always static) -->
+                        <div class="absolute bottom-0 w-full h-12 bg-[#e6ccb2] border-t-4 border-[#ddb892] flex items-center justify-center z-20">
+                            <span class="text-[#9c6644] font-bold text-sm">ריצוף</span>
+                        </div>
+
+                        <!-- Dynamic Elements Container -->
+                        <!-- Reference points: Wall face is at right: 8rem (128px from right). Floor top is at bottom: 3rem (48px from bottom). -->
+                        
+                        <!-- Polymer Cladding -->
+                        <div id="vis-cladding" class="diagram-element absolute bg-[#bde0fe] border-l-2 border-b-2 border-[#a2d2ff] rounded-bl-sm z-30 flex items-center justify-center shadow-sm"
+                             style="right: 8rem; top: 0; bottom: 5rem; width: 1rem;">
+                            <span id="label-cladding" class="absolute left-[-5rem] text-sm font-bold text-[#457b9d] bg-white/80 px-1 rounded opacity-100 transition-opacity">חיפוי פולימרי </span>
+                            <!-- Dotted line connecting label to element -->
+                            <div class="absolute left-[-1.5rem] w-6 border-t border-dashed border-[#457b9d]"></div>
+                        </div>
+
+                        <!-- Baseboard -->
+                        <div id="vis-baseboard" class="diagram-element absolute bg-white border-2 border-stone-300 rounded-tl-md z-40 shadow-sm flex items-center justify-center"
+                             style="right: 8rem; bottom: 3rem; height: 4rem; width: 1.5rem;">
+                             <span class="absolute left-[-4rem] text-sm font-bold text-stone-600 bg-white/80 px-1 rounded">פנל 10 ס"מ</span>
+                             <div class="absolute left-[-1rem] w-4 border-t border-dashed border-stone-400"></div>
+                        </div>
+                        
+                        <!-- Silicone/Gap Indicator -->
+                        <div id="vis-gap" class="diagram-element absolute bg-transparent border border-rose-400 rounded-full z-50 opacity-0"
+                             style="right: 8rem; bottom: 3rem; height: 1.5rem; width: 1.5rem; transform: translate(50%, 50%);">
+                             <span class="absolute right-[2rem] text-xs font-bold text-rose-500 whitespace-nowrap bg-white px-1">ניתוק/סיליקון</span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Analysis & Data Section -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            
+            <!-- Chart Container -->
+            <div class="bg-white rounded-2xl shadow-sm border border-stone-200 p-6 flex flex-col">
+                <h2 class="text-2xl font-bold text-stone-900 mb-2">השוואת ביצועים</h2>
+                <p class="text-sm text-stone-600 mb-6">ניתוח מקצועי של 3 השיטות על פי פרמטרים מרכזיים באחזקת בית.</p>
+                <div class="flex-grow flex items-center justify-center">
+                    <div class="chart-container w-full">
+                        <canvas id="comparisonChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Decision Engine -->
+            <div class="bg-brand-900 rounded-2xl shadow-sm p-8 text-white flex flex-col justify-center">
+                <h2 class="text-3xl font-bold text-brand-50 mb-4">המחשבון האדריכלי</h2>
+                <p class="text-brand-200 mb-8">הגורם המכריע ביותר בבחירת השיטה הוא ההבדל בין עובי החיפוי לעובי הפנל. בחר את המידות המשוערות של החומרים שהזמנת כדי לקבל את ההמלצה המדויקת ביותר עבורך.</p>
+                
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-brand-100 font-bold mb-2">מה עובי הפנל רצפה שהוזמן? (בערך)</label>
+                        <select id="calc-baseboard" class="w-full bg-brand-800 border border-brand-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all">
+                            <option value="10">דק: ~1 ס"מ (10 מ"מ)</option>
+                            <option value="15" selected>סטנדרט: ~1.5 ס"מ (15 מ"מ)</option>
+                            <option value="20">עבה: ~2 ס"מ (20 מ"מ)</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-brand-100 font-bold mb-2">מה עובי החיפוי הפולימרי לקיר? (בערך)</label>
+                        <select id="calc-cladding" class="w-full bg-brand-800 border border-brand-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all">
+                            <option value="5">דק מאוד (טפט פולימרי): ~5 מ"מ</option>
+                            <option value="12" selected>סטנדרט: ~1.2 ס"מ (12 מ"מ)</option>
+                            <option value="18">עבה / פסי עץ בולטים: ~1.8 ס"מ (18 מ"מ)</option>
+                        </select>
+                    </div>
+
+                    <button onclick="calculateRecommendation()" class="w-full bg-white text-brand-900 font-bold py-4 rounded-xl hover:bg-brand-50 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 mt-4">
+                        קבל המלצה סופית
+                    </button>
+                </div>
+
+                <!-- Result Box -->
+                <div id="calc-result" class="mt-6 p-4 rounded-xl bg-brand-800 border border-brand-600 hidden">
+                    <h4 class="font-bold text-brand-300 text-sm uppercase mb-1">ההמלצה עבורך:</h4>
+                    <p id="calc-result-text" class="text-lg font-medium text-white"></p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Conclusion -->
+        <section class="bg-stone-100 rounded-2xl p-8 text-center max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold text-stone-900 mb-4">סיכום התשובה עבורך</h2>
+            <p class="text-lg text-stone-700 leading-relaxed">
+                לשאלתך המקורית: הפתרון המקצועי והנכון ביותר לרוב הבתים בישראל (בגלל השטיפה עם הרבה מים) הוא <strong>להתקין פנלים בכל רחבי החדר</strong>, ולבקש מהמתקין להתחיל את חיפוי הקיר מקו הפנל ומעלה (אופציה 2). <br><br>
+                <strong>התנאי היחיד:</strong> יש לוודא שעובי הפנל שווה או גדול מעובי החיפוי. אם החיפוי שהזמנת עבה מאוד, ההמלצה מתהפכת ועדיף לרדת עם החיפוי עד הרצפה (אופציה 1) ולהקפיד על ניתוק ואיטום בחלק התחתון.
+            </p>
+        </section>
+
+    </div>
+
+    <script>
+        // Data structure for the interactive visualizer
+        const visualizerData = {
+            opt1: {
+                title: "אופציה 1: חיפוי עד הרצפה (ללא פנל)",
+                desc: "שמים פנלים רק בקירות החלקים. בקיר עם החיפוי, לא שמים פנל כלל, ומורידים את לוחות הפולימר עד כ-3 מ\"מ מהרצפה וסוגרים עם חומר איטום (סיליקון).",
+                pros: [
+                    "מראה נקי, מודרני ומינימליסטי.",
+                    "פותר בעיות של הפרשי עובי בין פנל לחיפוי.",
+                    "המשכיות רציפה של דוגמת הקיר מהתקרה ועד לרצפה."
+                ],
+                cons: [
+                    "סכנה לפגיעה ממים: ספונג'ה ישירה תשחוק את תחתית הפולימר לאורך זמן.",
+                    "רגיש למכות מגב/מטאטא בתחתית הקיר.",
+                    "קשה מאוד לאטום את הפנלים של שאר החדר (הקירות החלקים) בצורה יפה היכן שהם פוגשים את קו החיפוי."
+                ],
+                // CSS state for the diagram relative positioning
+                css: {
+                    cladding: { bottom: '3rem', width: '1rem', right: '8rem', zIndex: '30' }, // Goes down to floor (3rem bottom)
+                    baseboard: { bottom: '3rem', width: '0rem', right: '8rem', opacity: '0' }, // Hidden
+                    gap: { opacity: '1', right: '8.5rem', bottom: '3rem' } // Show gap indicator
+                }
+            },
+            opt2: {
+                title: "אופציה 2: פנל היקפי והחיפוי יושב עליו (מומלץ!)",
+                desc: "מתקינים את הפנל של ה-10 ס\"מ בכל רחבי החדר (גם בקירות החלקים וגם במחופים). לאחר מכן, מתקינים את חיפוי הקיר כך שהוא \"יושב\" על השפה העליונה של הפנל.",
+                pros: [
+                    "הגנה מושלמת ממים (ספונג'ה) ומכות של מגב.",
+                    "קו פנל אחיד והגיוני בכל רחבי החדר.",
+                    "מאריך את חיי החיפוי הפולימרי בעשרות שנים."
+                ],
+                cons: [
+                    "חובה שעיצוב הפנל יתאים לעיצוב החיפוי.",
+                    "קריטי: הפנל חייב להיות עבה יותר מהחיפוי! אם החיפוי בולט מעבר לפנל, זה יוצר 'מדרגה הפוכה' שאוספת אבק ונראית רע אדריכלית."
+                ],
+                css: {
+                    cladding: { bottom: '7rem', width: '1rem', right: '8rem', zIndex: '30' }, // Starts at top of baseboard (3rem floor + 4rem baseboard = 7rem)
+                    baseboard: { bottom: '3rem', width: '1.5rem', right: '8rem', opacity: '1', zIndex: '20' }, // Baseboard on wall. Thicker than cladding.
+                    gap: { opacity: '0' }
+                }
+            },
+            opt3: {
+                title: "אופציה 3: התקנה על-גבי החיפוי (מדורג)",
+                desc: "מתקינים את החיפוי קודם כל, כמעט עד הרצפה, ואז מדביקים את הפנל הסטנדרטי של החדר *על גבי* החיפוי הפולימרי.",
+                pros: [
+                    "מעניק הגנה טובה ממים ומכות.",
+                    "מאפשר להשתמש באותו פנל פשוט לכל הבית."
+                ],
+                cons: [
+                    "יוצר מראה מסורבל ובולט מאוד כלפי פנים החדר (עובי החיפוי + עובי הפנל).",
+                    "בנקודת המפגש בין קיר חלק לקיר מחופה, הפנל יקפוץ החוצה פתאום, דורש חיתוך זווית מורכב ('גרונג') כדי לא להיראות חובבני.",
+                    "פחות מומלץ למראה יוקרתי ונקי."
+                ],
+                css: {
+                    cladding: { bottom: '3rem', width: '1rem', right: '8rem', zIndex: '20' }, // Cladding on wall
+                    baseboard: { bottom: '3rem', width: '1rem', right: '9rem', opacity: '1', zIndex: '40' }, // Baseboard pushed out by cladding width (8rem + 1rem = 9rem)
+                    gap: { opacity: '0' }
+                }
+            }
+        };
+
+        function updateVisualizer(optKey) {
+            // Update Buttons Styling
+            ['opt1', 'opt2', 'opt3'].forEach(key => {
+                const btn = document.getElementById(`btn-${key}`);
+                if(key === optKey) {
+                    btn.classList.add('border-brand-500', 'bg-brand-50');
+                    btn.classList.remove('border-transparent', 'bg-white');
+                } else {
+                    btn.classList.remove('border-brand-500', 'bg-brand-50');
+                    btn.classList.add('border-transparent', 'bg-white');
+                }
+            });
+
+            // Update Text Content
+            const data = visualizerData[optKey];
+            document.getElementById('detail-title').innerText = data.title;
+            document.getElementById('detail-desc').innerText = data.desc;
+            
+            document.getElementById('detail-pros').innerHTML = data.pros.map(p => `<li>${p}</li>`).join('');
+            document.getElementById('detail-cons').innerHTML = data.cons.map(c => `<li>${c}</li>`).join('');
+
+            // Update Architectural CSS Diagram
+            const cladding = document.getElementById('vis-cladding');
+            const baseboard = document.getElementById('vis-baseboard');
+            const gap = document.getElementById('vis-gap');
+            
+            // Apply CSS changes
+            Object.assign(cladding.style, data.css.cladding);
+            Object.assign(baseboard.style, data.css.baseboard);
+            Object.assign(gap.style, data.css.gap);
+        }
+
+        // Initialize Chart.js Radar Chart
+        function initChart() {
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            
+            // Set global font
+            Chart.defaults.font.family = "'Heebo', sans-serif";
+            
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        'מראה אדריכלי נקי', 
+                        'עמידות לשטיפה ומים', 
+                        'הגנה ממכות פיזיות', 
+                        'קלות התקנה וגימור', 
+                        'רצף זרימה בחדר'
+                    ],
+                    datasets: [{
+                        label: 'אופציה 1 (עד הרצפה)',
+                        data: [9, 3, 3, 6, 8],
+                        fill: true,
+                        backgroundColor: 'rgba(56, 189, 248, 0.2)', // Sky blue
+                        borderColor: 'rgb(56, 189, 248)',
+                        pointBackgroundColor: 'rgb(56, 189, 248)',
+                        pointHoverBorderColor: 'rgb(56, 189, 248)'
+                    }, {
+                        label: 'אופציה 2 (פנל כבסיס)',
+                        data: [8, 9, 9, 8, 9],
+                        fill: true,
+                        backgroundColor: 'rgba(20, 184, 166, 0.4)', // Brand teal
+                        borderColor: 'rgb(20, 184, 166)',
+                        pointBackgroundColor: 'rgb(20, 184, 166)',
+                        pointHoverBorderColor: 'rgb(20, 184, 166)'
+                    }, {
+                        label: 'אופציה 3 (פנל מדורג)',
+                        data: [4, 9, 8, 4, 3],
+                        fill: true,
+                        backgroundColor: 'rgba(168, 162, 158, 0.2)', // Stone grey
+                        borderColor: 'rgb(168, 162, 158)',
+                        pointBackgroundColor: 'rgb(168, 162, 158)',
+                        pointHoverBorderColor: 'rgb(168, 162, 158)'
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { rtl: true, font: {size: 13} }
+                        },
+                        tooltip: {
+                            rtl: true,
+                            titleFont: {family: 'Heebo'},
+                            bodyFont: {family: 'Heebo'}
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                            grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                            pointLabels: {
+                                font: { size: 12, family: 'Heebo', weight: 'bold' },
+                                color: '#444'
+                            },
+                            ticks: { display: false, min: 0, max: 10 }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Decision Calculator Logic
+        function calculateRecommendation() {
+            const baseboardThickness = parseInt(document.getElementById('calc-baseboard').value);
+            const claddingThickness = parseInt(document.getElementById('calc-cladding').value);
+            
+            const resultBox = document.getElementById('calc-result');
+            const resultText = document.getElementById('calc-result-text');
+            
+            resultBox.classList.remove('hidden');
+            resultBox.classList.add('animate-pulse');
+            setTimeout(() => resultBox.classList.remove('animate-pulse'), 500);
+
+            if (baseboardThickness > claddingThickness) {
+                resultText.innerHTML = `✅ <strong>מומלץ לבחור באופציה 2.</strong><br>הפנל שלך (עובי ${baseboardThickness} מ"מ) עבה יותר מהחיפוי (${claddingThickness} מ"מ). זה המצב האידיאלי! שים פנלים בכל החדר, והתקן את החיפוי מעליהם. תקבל מראה יפה והגנה מלאה ממים.`;
+                resultBox.className = "mt-6 p-4 rounded-xl border bg-brand-800 border-brand-500";
+            } else if (baseboardThickness === claddingThickness) {
+                resultText.innerHTML = `⚠️ <strong>גבולי: אפשר אופציה 2 או 1.</strong><br>העוביים זהים (${baseboardThickness} מ"מ). התקנת החיפוי מעל הפנל תיצור קו מישור כמעט אחיד ("קו אפס"). זה דורש מתקין מדויק מאוד. אם הוא לא מדויק, עדיף לרדת עם החיפוי עד הרצפה (אופציה 1).`;
+                resultBox.className = "mt-6 p-4 rounded-xl border bg-amber-900/50 border-amber-500";
+            } else {
+                resultText.innerHTML = `💡 <strong>מומלץ לבחור באופציה 1.</strong><br>החיפוי שלך (${claddingThickness} מ"מ) עבה מהפנל (${baseboardThickness} מ"מ). אם תשים את החיפוי מעל הפנל, תיווצר "מדרגה הפוכה" מכוערת. עדיף לשים פנלים רק בקירות החלקים, ולהוריד את החיפוי עד הרצפה (ולהקפיד על ניתוק מסיליקון).`;
+                resultBox.className = "mt-6 p-4 rounded-xl border bg-sky-900/50 border-sky-500";
+            }
+        }
+
+        // Initialize App
+        window.onload = () => {
+            initChart();
+            // Start with option 2 selected
+            updateVisualizer('opt2');
+        };
+    </script>
+</body>
+</html>
