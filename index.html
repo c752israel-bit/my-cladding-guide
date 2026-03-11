@@ -3,123 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מדריך אדריכלי: חיפוי קיר-רצפה</title>
+    <title>מדריך הנדסי: חיפוי וריצוף מקצועי</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#2c3e50">
+    <meta name="theme-color" content="#1a252f">
     <link rel="icon" sizes="192x192" href="https://cdn-icons-png.flaticon.com/512/1048/1048953.png">
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;700&display=swap');
+        
         :root {
-            --primary: #2c3e50;
-            --accent: #3498db;
-            --bg: #f4f7f6;
+            --dark-blue: #2c3e50;
+            --light-blue: #3498db;
+            --warning: #e67e22;
+            --success: #27ae60;
+            --bg: #f8f9fa;
         }
+
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            line-height: 1.6;
+            font-family: 'Heebo', sans-serif;
+            line-height: 1.8;
             color: #333;
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 15px;
             background-color: var(--bg);
         }
+
         header {
             text-align: center;
-            padding: 40px 20px;
-            background: var(--primary);
+            padding: 50px 20px;
+            background: linear-gradient(135deg, var(--dark-blue), #1a252f);
             color: white;
-            border-radius: 15px;
+            border-radius: 0 0 30px 30px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         }
+
+        h1 { margin: 0; font-size: 2.2rem; font-weight: 700; }
+        .subtitle { font-size: 1.1rem; opacity: 0.9; }
+
         .card {
             background: white;
             padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border-radius: 18px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             margin-bottom: 25px;
+            border-right: 6px solid var(--light-blue);
         }
-        h2 { color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+
+        h2 { color: var(--dark-blue); font-size: 1.5rem; margin-top: 0; display: flex; align-items: center; gap: 10px; }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
         }
+
         th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: right;
-        }
-        th { background-color: var(--accent); color: white; }
-        tr:nth-child(even) { background-color: #f9f9f9; }
-        .highlight {
-            background: #e1f5fe;
             padding: 15px;
-            border-right: 5px solid var(--accent);
-            border-radius: 5px;
-            margin: 15px 0;
+            text-align: right;
+            border-bottom: 1px solid #eee;
         }
+
+        th { background-color: var(--dark-blue); color: white; font-weight: 500; }
+        tr:hover { background-color: #f1f7ff; }
+
+        .pro-tip {
+            background: #fff3e0;
+            border-right: 6px solid var(--warning);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            background: var(--success);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        footer { text-align: center; padding: 20px; color: #888; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>מדריך אדריכלי: מפגש קיר-רצפה</h1>
-    <p>דגשים טכניים לביצוע חיפויים וריצוף</p>
+    <h1>מדריך אדריכלי: חיפוי וריצוף</h1>
+    <p class="subtitle">סטנדרט ביצוע להנדסאים ואנשי מקצוע</p>
 </header>
 
 <div class="card">
-    <h2>סדר פעולות מומלץ</h2>
-    <p>כדי להבטיח איטום מושלם ומראה אסתטי, יש לעבוד לפי הסדר הבא:</p>
-    <div class="highlight">
-        <strong>1. ריצוף:</strong> ביצוע הריצוף עד למרחק של כ-1 ס"מ מהקיר.<br>
-        <strong>2. איטום:</strong> יישום מסטיק איטום בחיבור בין הרצפה לקיר.<br>
-        <strong>3. חיפוי:</strong> התקנת אריחי הקיר מעל הריצוף (כיסוי המרווח).
-    </div>
+    <h2>1. הכנת התשתית (Substrate)</h2>
+    <p>הבסיס לעבודה איכותית מתחיל בבדיקת התשתית. ללא הכנה נכונה, החיפוי יתנתק לאורך זמן.</p>
+    <ul>
+        <li><strong>פלס ויישור:</strong> סטייה מקסימלית מותרת של 2 מ"מ על אורך של 2 מטר.</li>
+        <li><strong>ניקיון:</strong> הסרת שאריות בטון, שומנים ואבק.</li>
+        <li><strong>כושר ספיגה:</strong> במידת הצורך, יישום פריימר לשיפור ההידבקות.</li>
+    </ul>
 </div>
 
 <div class="card">
-    <h2>טבלת חומרים וכלים</h2>
+    <h2>2. מפרט חומרים טכני</h2>
     <table>
         <thead>
             <tr>
-                <th>חומר/כלי</th>
-                <th>תפקיד</th>
-                <th>דגש לביצוע</th>
+                <th>חומר</th>
+                <th>סיווג תקני</th>
+                <th>תפקיד הנדסי</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>דבק גמיש (C2TE-S1)</td>
-                <td>הדבקת אריחים</td>
-                <td>מריחה בשכבה כפולה</td>
+                <td>דבק צמנטי גמיש</td>
+                <td>C2TE-S1</td>
+                <td>הדבקה עם גמישות לשינויי טמפרטורה</td>
             </tr>
             <tr>
-                <td>ספייסרים</td>
-                <td>שמירה על פוגות</td>
-                <td>מינימום 3 מ"מ בחוץ</td>
+                <td>רובה אקרילית/אפוקסית</td>
+                <td>CG2WA</td>
+                <td>מילוי מישקים ודחיית מים</td>
             </tr>
             <tr>
-                <td>סיליקון / מסטיק</td>
-                <td>איטום פינות</td>
-                <td>עמיד ב-UV ובעובש</td>
+                <td>מסטיק פוליאוריטני</td>
+                <td>PU 40</td>
+                <td>איטום גמיש במפגשי קיר-רצפה</td>
             </tr>
         </tbody>
     </table>
 </div>
 
 <div class="card">
-    <h2>דגשי בטיחות ודיוק</h2>
-    <ul>
-        <li>וודא שהתשתית נקייה מאבק ושומנים לפני ההדבקה.</li>
-        <li>יש לבצע בדיקת "מכה" על האריחים לוודא שאין חללים ריקים (סאונד חלול).</li>
-        <li>במפגש קיר-רצפה בחדרים רטובים, חובה להקפיד על רולקה תקנית.</li>
-    </ul>
+    <h2>3. פרט מפגש קיר-רצפה (The Critical Joint)</h2>
+    <div class="tech-grid">
+        <div style="background: #f1f8ff; padding: 15px; border-radius: 12px;">
+            <strong>סדר הביצוע הנכון:</strong>
+            <ol>
+                <li>ריצוף הרצפה עד מרחק קצר מהקיר.</li>
+                <li>איטום המרווח בפינה (רולקה).</li>
+                <li>חיפוי הקיר כשהוא "יושב" מעל הריצוף.</li>
+            </ol>
+        </div>
+        <div>
+            <strong>למה זה חשוב?</strong>
+            <p>שיטה זו מבטיחה שמים שזולגים על הקיר יזרמו ישירות אל תוך אריח הרצפה ולא יחלחלו מתחת לריצוף במפגש הפינתי.</p>
+        </div>
+    </div>
+    <div class="pro-tip">
+        💡 <strong>טיפ הנדסי:</strong> בחיפוי חוץ או במרפסות, חובה להשאיר פוגות של 3 מ"מ לפחות כדי לאפשר התפשטות תרמית של האריח.
+    </div>
 </div>
 
+<div class="card">
+    <h2>4. רשימת בדיקה (Checklist) למפקח</h2>
+    <div class="checklist-item">✅ פריסה מוקדמת (Dry Layout) למניעת שאריות קטנות בפינות.</div>
+    <div class="checklist-item">✅ מריחה כפולה (Double Buttering) באריחים גדולים מ-40/40.</div>
+    <div class="checklist-item">✅ בדיקת חללים (הקשה) לאחר 24 שעות מההדבקה.</div>
+    <div class="checklist-item">✅ יישום רובה רק לאחר ייבוש מלא של הדבק (כ-72 שעות).</div>
+</div>
+
+<footer>
+    <p>נערך עבור שׂרוּל - הנדסת אדריכלות וביצוע</p>
+</footer>
+
 </body>
-</html>
+</html> 
